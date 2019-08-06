@@ -1,18 +1,18 @@
-# Terraform LDAP 
+# Terraform LDAP
 
-[![CircleCI](https://circleci.com/gh/Pryz/terraform-provider-ldap.svg?style=svg)](https://circleci.com/gh/Pryz/terraform-provider-ldap)
+*Forked from [Pryz/terraform-provider-ldap](https://github.com/Pryz/terraform-provider-ldap) and made compatible with terraform 0.12 using official instructions.*
 
 ## Installation
 
-You can easily install the latest version with the following :
+You can easily install the latest version with the following:
 
-```
-go get -u github.com/Pryz/terraform-provider-ldap
+``` shell
+go get -u github.com/freenowtech/terraform-provider-ldap
 ```
 
-Then add the plugin to your local `.terraformrc` :
+Then add the plugin to your local `.terraformrc`:
 
-```
+``` shell
 cat >> ~/.terraformrc <<EOF
 providers {
     ldap = "${GOPATH}/bin/terraform-provider-ldap"
@@ -22,7 +22,7 @@ EOF
 
 ## Provider example
 
-```
+``` hcl
 provider "ldap" {
     ldap_host = "ldap.example.org"
     ldap_port = 389
@@ -34,7 +34,7 @@ provider "ldap" {
 
 ## Resource LDAP Object example
 
-```
+``` hcl
 resource "ldap_object" "foo" {
     # DN must be complete (no RDN!)
     dn = "uid=foo,dc=example,dc=com"
@@ -79,10 +79,12 @@ remote LDAP server due to it missing in the local ```.tf``` files.
 In order to have the plugin generate this file, put the name of the output file
 (which must *not* exist on disk) in the ```TF_LDAP_IMPORTER_PATH``` environment 
 variable, like this:
+
+``` shell
+export TF_LDAP_IMPORTER_PATH=a123456.tf 
+terraform import ldap_object.a123456 uid=a123456,ou=users,dc=example,dc=com
 ```
-$> export TF_LDAP_IMPORTER_PATH=a123456.tf 
-$> terraform import ldap_object.a123456 uid=a123456,ou=users,dc=example,dc=com
-```
+
 and the plugin will create the ```a123456.tf``` file with the proper information.
 Then merge this file into your existing ```.tf``` file(s).
 
